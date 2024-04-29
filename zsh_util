@@ -1,0 +1,161 @@
+# Colors
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+NOCOLOR="\033[0m"
+
+# Alias
+alias k='kubectl'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias kl='kubectl logs'
+alias ke='kubectl get events'
+alias kns='kubens'
+alias ktx='kubectx'
+alias p3='python3'
+alias p3i='python3 -m pip install'
+alias g='git'
+alias gb='git branch'
+alias gc='git checkout'
+alias gcb='git checkout -b'
+
+# git cmd prompt
+autoload -Uz compinit && compinit
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git*' formats "%r:(%b)"
+setopt prompt_subst
+PROMPT='${vcs_info_msg_0_}|%1~ %# '
+
+ulimit -n 4096
+
+#kubectl completion
+source <(kubectl completion zsh)
+
+setup-vim() {
+	echo syntax on > ~/.vimrc
+	echo set number >> ~/.vimrc
+	echo set rc=0 >> ~/.vimrc
+	echo colorscheme monokai >> ~/.vimrc
+}
+
+kpex() {
+        POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+        cmd="kubectl exec $POD -- $2"
+        echo running $GREEN $cmd $NOCOLOR
+        eval $cmd
+}
+
+kgpod() {
+	POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+	printf $POD
+}
+
+kssh () {
+	POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+	cmd="kubectl -it exec $POD -- bash"
+	echo running $GREEN $cmd $NOCOLOR
+	eval $cmd
+}
+
+azssh () {
+	NODE=`kubectl get nodes | grep $1 | cut -f1 -d' ' | tail -n 1`
+	echo $GREEN SSH into AKS node $NODE$NOCOLOR
+	kubectl debug node/$NODE -it --image=mcr.microsoft.com/dotnet/runtime-deps:6.0
+}
+
+kpf () {
+	POD=`kgpod $1`
+	echo port-forward to pod $GREEN $POD $NOCOLOR on $GREEN $2 $NOCOLOR
+	kubectl port-forward $POD $2:$2
+}
+
+rebasem () {
+	BRANCH=`git branch --show-current`
+	MASTER=`git branch | grep master | tr -d ' '`
+	if [ "$MASTER" = "master" ]; then
+		MBRANCH="master"
+	else
+		MBRANCH="main"
+	fi
+	echo $GREEN rebase $BRANCH onto $MBRANCH $NOCOLOR
+	git checkout $MBRANCH
+	git pull
+	git checkout $BRANCH
+	git rebase $MBRANCH
+}
+
+grm () {
+	rebasem
+}
+
+gcm () {
+	git branch | grep master
+	if [ $? -eq 0 ]; then
+		MBRANCH="master"
+	else
+		MBRANCH="main"
+	fi
+	echo $GREEN checkout $MBRANCH $NOCOLOR
+	git checkout $MBRANCH
+}
+
+setup-vim() {
+	echo syntax on > ~/.vimrc
+	echo set number >> ~/.vimrc
+	echo set rc=0 >> ~/.vimrc
+	echo colorscheme monokai >> ~/.vimrc
+}
+
+# outreach
+alias osrc='cd ~/code/getoutreach'
+alias playground='cd ~/playground'
+export PATH="~/.yarn/bin:$PATH"
+
+bentosql() {
+	if [ $# -ne 3 ]; then
+		printf "Usage:\n\tbensql bento service resource\nExample:\n\tbentosql staging1a kaiafrontdoor kaia\n"
+		return
+	fi
+	echo ${GREEN}Connecting to psql bento:$1 service:$2 resource:$3 $NOCOLOR
+	go run github.com/getoutreach/smartstorectl/cmd/smartstorectl@latest psql --namespace $2--$1 --resource $3 --bento $1 --user infra
+}
+
+export K8S_NAMESPACE=rolling
+
+kenv() {
+	if [ "$1" = "rolling" ]; then
+		ktx aks-mi-dev-westus2
+		kns rolling
+	elif [ "$1" = "staging" ]; then
+		ktx aks-mi-dev-westus2
+		kns staging
+	elif [ "$1" = "app1d" ]; then
+		ktx aks-mi-prod-westus2
+		kns app1d
+	elif [ "$1" = "app1x" ]; then
+		ktx aks-mi-prod-westus2
+		kns app1x
+	elif [ "$1" = "app2x" ]; then
+		ktx aks-mi-prod-eastus2
+		kns app2x
+	elif [ "$1" = "app4x" ]; then
+		ktx aks-mi-prod-northeu
+		kns app4x 
+	elif [ "$1" = "devenv" ]; then
+		ktx dev-environment
+	else
+		echo $GREEN`ktx -c`/`kns -c` $NOCOLOR
+	fi
+}
+
+devsql() {
+	kubectl -n bento1a exec -it service-postgresql14-0 -- psql -U outreach
+}
+
+setaksenv () {
+	az login
+	az aks get-credentials --subscription "Kaia" -g mi-prod-westus2 -n aks-mi-prod-westus2
+	az aks get-credentials --subscription "Kaia" -g mi-dev-westus2 -n aks-mi-dev-westus2
+	az aks get-credentials --subscription "Kaia" -g mi-prod-eastus2 -n aks-mi-prod-eastus2
+	az aks get-credentials --subscription "Kaia" -g mi-prod-northeu -n aks-mi-prod-northeu
+}

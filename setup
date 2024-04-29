@@ -1,0 +1,3 @@
+#!/bin/zsh
+echo source $(pwd)/zsh_util >>~/.zshrc
+source ./zsh_util
