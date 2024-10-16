@@ -3,7 +3,7 @@ RED="\033[1;31m"
 GREEN="\033[1;32m"
 NOCOLOR="\033[0m"
 
-# Alias
+# k8s Alias
 alias k='kubectl'
 alias kg='kubectl get'
 alias kd='kubectl describe'
@@ -11,12 +11,17 @@ alias kl='kubectl logs'
 alias ke='kubectl get events'
 alias kns='kubens'
 alias ktx='kubectx'
+
+# python alias
 alias p3='python3'
 alias p3i='python3 -m pip install'
+
+# git alias
 alias g='git'
 alias gb='git branch'
 alias gc='git checkout'
 alias gcb='git checkout -b'
+alias gp='git pull'
 
 # git cmd prompt
 autoload -Uz compinit && compinit
@@ -27,16 +32,10 @@ setopt prompt_subst
 PROMPT='${vcs_info_msg_0_}|%1~ %# '
 
 ulimit -n 4096
+unsetopt nomatch
 
 #kubectl completion
 source <(kubectl completion zsh)
-
-setup-vim() {
-	echo syntax on > ~/.vimrc
-	echo set number >> ~/.vimrc
-	echo set rc=0 >> ~/.vimrc
-	echo colorscheme monokai >> ~/.vimrc
-}
 
 kpex() {
         POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
@@ -69,6 +68,7 @@ kpf () {
 	kubectl port-forward $POD $2:$2
 }
 
+# base to main
 rebasem () {
 	BRANCH=`git branch --show-current`
 	MASTER=`git branch | grep master | tr -d ' '`
@@ -88,6 +88,7 @@ grm () {
 	rebasem
 }
 
+# checkout main
 gcm () {
 	git branch | grep master
 	if [ $? -eq 0 ]; then
@@ -97,13 +98,6 @@ gcm () {
 	fi
 	echo $GREEN checkout $MBRANCH $NOCOLOR
 	git checkout $MBRANCH
-}
-
-setup-vim() {
-	echo syntax on > ~/.vimrc
-	echo set number >> ~/.vimrc
-	echo set rc=0 >> ~/.vimrc
-	echo colorscheme monokai >> ~/.vimrc
 }
 
 # outreach
@@ -158,4 +152,18 @@ setaksenv () {
 	az aks get-credentials --subscription "Kaia" -g mi-dev-westus2 -n aks-mi-dev-westus2
 	az aks get-credentials --subscription "Kaia" -g mi-prod-eastus2 -n aks-mi-prod-eastus2
 	az aks get-credentials --subscription "Kaia" -g mi-prod-northeu -n aks-mi-prod-northeu
+}
+
+conda() {
+	__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
+	if [ $? -eq 0 ]; then
+    	eval "$__conda_setup"
+	else
+    	if [ -f "/opt/anaconda3/etc/profile.d/conda.sh" ]; then
+        	. "/opt/anaconda3/etc/profile.d/conda.sh"
+    	else
+        	export PATH="/opt/anaconda3/bin:$PATH"
+    	fi
+	fi
+	unset __conda_setup
 }

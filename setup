@@ -1,3 +1,10 @@
 #!/bin/zsh
 echo source $(pwd)/zsh_util >>~/.zshrc
 source ./zsh_util
+
+# setup Vim
+cp ./vim/colors/* ~/.vim/colors
+echo syntax on >~/.vimrc
+echo set number >>~/.vimrc
+echo set rc=0 >>~/.vimrc
+echo colorscheme monokai >>~/.vimrc
