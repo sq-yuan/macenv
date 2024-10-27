@@ -1,0 +1,3 @@
+#!/bin/zsh
+
+./iTerm2-Color-Schemes/tools/import-scheme.sh Django Dracula 'Hipster Green'
