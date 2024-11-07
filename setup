@@ -1,10 +1,24 @@
 #!/bin/zsh
+
+# install tools
+brew install kubectl
+
+# source
 echo source $(pwd)/zsh_util >>~/.zshrc
 source ./zsh_util
 
 # setup Vim
-cp ./vim/colors/* ~/.vim/colors
-echo syntax on >~/.vimrc
-echo set number >>~/.vimrc
-echo set rc=0 >>~/.vimrc
-echo colorscheme monokai >>~/.vimrc
+mkdir -p ~/.vim/colors
+cp ./.vim/colors/* ~/.vim/colors
+echo "
+syntax on
+set number
+set tabstop=2
+set autoindent
+set smartindent
+set smarttab
+set expandtab
+set cursorline
+set scrolloff=8
+set mouse=a
+colorscheme monokai" >~/.vimrc
