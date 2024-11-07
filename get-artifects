@@ -1,0 +1,7 @@
+#!/bin/zsh
+
+mkdir -p downloads
+
+echo Download iTerm2 color schemes
+curl --output-dir downloads -O https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/Django.itermcolors
+curl --output-dir downloads -O https://raw.githubusercontent.com/mbadolato/iTerm2-Color-Schemes/master/schemes/Dracula.itermcolors
