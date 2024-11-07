@@ -100,59 +100,9 @@ gcm () {
 	git checkout $MBRANCH
 }
 
-# outreach
-alias osrc='cd ~/code/getoutreach'
+alias src='cd ~/code'
 alias playground='cd ~/playground'
-export PATH="~/.yarn/bin:$PATH"
 
-bentosql() {
-	if [ $# -ne 3 ]; then
-		printf "Usage:\n\tbensql bento service resource\nExample:\n\tbentosql staging1a kaiafrontdoor kaia\n"
-		return
-	fi
-	echo ${GREEN}Connecting to psql bento:$1 service:$2 resource:$3 $NOCOLOR
-	go run github.com/getoutreach/smartstorectl/cmd/smartstorectl@latest psql --namespace $2--$1 --resource $3 --bento $1 --user infra
-}
-
-export K8S_NAMESPACE=rolling
-
-kenv() {
-	if [ "$1" = "rolling" ]; then
-		ktx aks-mi-dev-westus2
-		kns rolling
-	elif [ "$1" = "staging" ]; then
-		ktx aks-mi-dev-westus2
-		kns staging
-	elif [ "$1" = "app1d" ]; then
-		ktx aks-mi-prod-westus2
-		kns app1d
-	elif [ "$1" = "app1x" ]; then
-		ktx aks-mi-prod-westus2
-		kns app1x
-	elif [ "$1" = "app2x" ]; then
-		ktx aks-mi-prod-eastus2
-		kns app2x
-	elif [ "$1" = "app4x" ]; then
-		ktx aks-mi-prod-northeu
-		kns app4x 
-	elif [ "$1" = "devenv" ]; then
-		ktx dev-environment
-	else
-		echo $GREEN`ktx -c`/`kns -c` $NOCOLOR
-	fi
-}
-
-devsql() {
-	kubectl -n bento1a exec -it service-postgresql14-0 -- psql -U outreach
-}
-
-setaksenv () {
-	az login
-	az aks get-credentials --subscription "Kaia" -g mi-prod-westus2 -n aks-mi-prod-westus2
-	az aks get-credentials --subscription "Kaia" -g mi-dev-westus2 -n aks-mi-dev-westus2
-	az aks get-credentials --subscription "Kaia" -g mi-prod-eastus2 -n aks-mi-prod-eastus2
-	az aks get-credentials --subscription "Kaia" -g mi-prod-northeu -n aks-mi-prod-northeu
-}
 
 conda() {
 	__conda_setup="$('/opt/anaconda3/bin/conda' 'shell.zsh' 'hook' 2> /dev/null)"
