@@ -1,0 +1,17 @@
+#!/bin/zsh
+
+mkdir -p ~/.vim/colors
+cp ./.vim/colors/* ~/.vim/colors
+echo "
+syntax on
+set number
+set tabstop=2
+set autoindent
+set smartindent
+set smarttab
+set expandtab
+set cursorline
+set scrolloff=8
+set mouse=a
+colorscheme monokai" >~/.vimrc
+
