@@ -15,3 +15,7 @@ set scrolloff=8
 set mouse=a
 colorscheme monokai" >~/.vimrc
 
+# config github user
+git config user.name sq-yuan
+git config user.email yuanshaoqian@gmail.com
+

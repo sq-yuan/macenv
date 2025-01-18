@@ -2,8 +2,14 @@
 
 # install tools
 brew install kubectl
+brew install kubectx
 
 # source
-echo source $(pwd)/zsh_util >>~/.zshrc
-source ./zsh_util
+echo source $(pwd)/zsh_common >>~/.zshrc
+echo source $(pwd)/zsh_git_alias >>~/.zshrc
+echo source $(pwd)/zsh_k8s_alias >>~/.zshrc
+echo source $(pwd)/zsh_py_alias >>~/.zshrc
 
+# git setup
+git config --global alias.sm smartlog
+git config --global alias.amend 'commit --amend --no-edit'

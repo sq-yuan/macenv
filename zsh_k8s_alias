@@ -1,0 +1,36 @@
+# k8s Alias
+alias k='kubectl'
+alias kg='kubectl get'
+alias kd='kubectl describe'
+alias kl='kubectl logs'
+alias ke='kubectl get events'
+alias kns='kubens'
+alias ktx='kubectx'
+
+#kubectl completion
+source <(kubectl completion zsh)
+
+kpex() {
+        POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+        cmd="kubectl exec $POD -- $2"
+        echo running $GREEN $cmd $NOCOLOR
+        eval $cmd
+}
+
+kgpod() {
+	POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+	printf $POD
+}
+
+kssh () {
+	POD=`kubectl get po | grep $1 | cut -f1 -d' ' | tail -n 1`
+	cmd="kubectl -it exec $POD -- bash"
+	echo running $GREEN $cmd $NOCOLOR
+	eval $cmd
+}
+
+kpf () {
+	POD=`kgpod $1`
+	echo port-forward to pod $GREEN $POD $NOCOLOR on $GREEN $2 $NOCOLOR
+	kubectl port-forward $POD $2:$2
+}

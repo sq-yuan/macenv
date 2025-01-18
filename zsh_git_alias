@@ -1,0 +1,49 @@
+# git alias
+alias g='git'
+alias gb='git branch'
+alias gc='git checkout'
+alias gcb='git checkout -b'
+alias gp='git pull'
+
+# git cmd prompt
+autoload -Uz compinit && compinit
+autoload -Uz vcs_info
+precmd() { vcs_info }
+zstyle ':vcs_info:git*' formats "%r:(%b)"
+setopt prompt_subst
+PROMPT='${vcs_info_msg_0_}|%1~ %# '
+
+ulimit -n 4096
+unsetopt nomatch
+
+# base to main
+rebasem () {
+	BRANCH=`git branch --show-current`
+	MASTER=`git branch | grep master | tr -d ' '`
+	if [ "$MASTER" = "master" ]; then
+		MBRANCH="master"
+	else
+		MBRANCH="main"
+	fi
+	echo $GREEN rebase $BRANCH onto $MBRANCH $NOCOLOR
+	git checkout $MBRANCH
+	git pull
+	git checkout $BRANCH
+	git rebase $MBRANCH
+}
+
+grm () {
+	rebasem
+}
+
+# checkout main
+gcm () {
+	git branch | grep master
+	if [ $? -eq 0 ]; then
+		MBRANCH="master"
+	else
+		MBRANCH="main"
+	fi
+	echo $GREEN checkout $MBRANCH $NOCOLOR
+	git checkout $MBRANCH
+}

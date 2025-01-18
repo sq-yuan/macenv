@@ -1,0 +1,17 @@
+# Colors
+RED="\033[1;31m"
+GREEN="\033[1;32m"
+NOCOLOR="\033[0m"
+
+alias playground='cd ~/playground'
+
+jver() {
+  if [ "$#" -eq 1 ]; then
+    echo $GREEN changing JAVA version to $1 $NOCOLOR
+    export JAVA_HOME=`/usr/libexec/java_home -v $1`
+  fi
+  java -version
+}
+
+alias java-23='export JAVA_HOME=`/usr/libexec/java_home -v 23`; java -version'
+alias java-17='export JAVA_HOME=`/usr/libexec/java_home -v 17`; java -version'
