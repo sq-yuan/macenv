@@ -4,6 +4,7 @@ GREEN="\033[1;32m"
 NOCOLOR="\033[0m"
 
 alias playground='cd ~/playground'
+alias code='open -a /Applications/Visual\ Studio\ Code.app'
 
 jver() {
   if [ "$#" -eq 1 ]; then
