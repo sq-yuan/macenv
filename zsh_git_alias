@@ -2,8 +2,8 @@
 alias g='git'
 alias gb='git branch'
 alias gc='git checkout'
-alias gcb='git checkout -b'
 alias gp='git pull'
+alias gs='git status'
 
 # git cmd prompt
 autoload -Uz compinit && compinit
@@ -15,6 +15,13 @@ PROMPT='${vcs_info_msg_0_}|%1~ %# '
 
 ulimit -n 4096
 unsetopt nomatch
+
+# new branch
+gcb () {
+  gcm
+  git pull
+  git checkout -b $1 
+}
 
 # base to main
 rebasem () {
