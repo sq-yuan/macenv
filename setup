@@ -11,5 +11,5 @@ echo source $(pwd)/zsh_k8s_alias >>~/.zshrc
 echo source $(pwd)/zsh_py_alias >>~/.zshrc
 
 # git setup
-git config --global alias.sm smartlog
+git config --global alias.sl smartlog
 git config --global alias.amend 'commit --amend --no-edit'
