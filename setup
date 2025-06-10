@@ -13,3 +13,7 @@ echo source $(pwd)/zsh_py_alias >>~/.zshrc
 # git setup
 git config --global alias.sl smartlog
 git config --global alias.amend 'commit --amend --no-edit'
+
+# config github user
+git config user.name sq-yuan
+git config user.email yuanshaoqian@gmail.com
