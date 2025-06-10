@@ -1,7 +1,7 @@
 #!/bin/zsh
 
 mkdir -p ~/.vim/colors
-cp ./.vim/colors/* ~/.vim/colors
+cp $(dirname $0)/.vim/colors/* ~/.vim/colors
 echo "
 syntax on
 set number
